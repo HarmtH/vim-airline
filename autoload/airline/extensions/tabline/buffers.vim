@@ -12,6 +12,8 @@ let s:current_modified = 0
 let s:current_tabline = ''
 let s:current_visible_buffers = []
 
+let s:ctrlspace = get(g:, 'airline#extensions#ctrlspace#enabled', 1) && get(g:, 'CtrlSpaceLoaded', 0)
+
 let s:number_map = &encoding == 'utf-8'
       \ ? {
       \ '0': '⁰',
@@ -54,6 +56,20 @@ function! airline#extensions#tabline#buffers#get()
 
   let l:index = 1
   let b = airline#extensions#tabline#new_builder()
+
+  let first_section = ' '
+  if s:ctrlspace == 1
+    let title = ctrlspace#api#TabTitle(tabpagenr(), 0, -1)
+    if title!="[-1]"
+      " call b.add_section('airline_tabtype', ' '.title.' ')
+      let first_section .= title.' '
+    endif
+  endif
+  let first_section .= '['.tabpagenr().'/'.tabpagenr('$').'] '
+  " call b.add_section('airline_tabtype', '['.tabpagenr().'/'.tabpagenr('$').'] ')
+  call b.add_section('airline_tabtype', first_section)
+  call b.add_section('airline_tab','')
+
   let tab_bufs = tabpagebuflist(tabpagenr())
   for nr in s:get_visible_buffers()
     if nr < 0

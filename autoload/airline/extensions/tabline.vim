@@ -10,6 +10,10 @@ if s:taboo
   let g:taboo_tabline = 0
 endif
 
+let s:ctrlspace = get(g:, 'airline#extensions#ctrlspace#enabled', 1) && get(g:, 'CtrlSpaceLoaded', 0)
+if s:ctrlspace
+  let g:ctrlspace_tabline = 0
+endif
 
 function! airline#extensions#tabline#init(ext)
   if has('gui_running')
@@ -83,7 +87,11 @@ function! airline#extensions#tabline#title(n)
     let title = TabooTabTitle(a:n)
   endif
 
-  if empty(title)
+  if s:ctrlspace
+    let title = ctrlspace#api#TabTitle(a:n, 0, -1)
+  endif
+
+  if empty(title) || title=="[-1]"
     let buflist = tabpagebuflist(a:n)
     let winnr = tabpagewinnr(a:n)
     return airline#extensions#tabline#get_buffer_name(buflist[winnr - 1])

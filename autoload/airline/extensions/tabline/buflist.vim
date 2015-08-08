@@ -9,34 +9,36 @@ function! airline#extensions#tabline#buflist#invalidate()
 endfunction
 
 function! airline#extensions#tabline#buflist#list()
-  if exists('s:current_buffer_list')
-    return s:current_buffer_list
-  endif
+  " if exists('s:current_buffer_list')
+  "   return s:current_buffer_list
+  " endif
 
   let buffers = []
-  let cur = bufnr('%')
-  for nr in range(1, bufnr('$'))
-    if buflisted(nr) && bufexists(nr)
-      let toadd = 1
-      for ex in s:excludes
-        if match(bufname(nr), ex) >= 0
-          let toadd = 0
-          break
-        endif
-      endfor
-      if getbufvar(nr, 'current_syntax') == 'qf'
-        let toadd = 0
-      endif
-      if s:exclude_preview && getbufvar(nr, '&bufhidden') == 'wipe' && getbufvar(nr, '&buftype') == 'nofile'
-        let toadd = 0
-      endif
-      if toadd
-        call add(buffers, nr)
-      endif
-    endif
+  " let cur = bufnr('%')
+  " for nr in range(1, bufnr('$'))
+  "   if buflisted(nr) && bufexists(nr)
+  "     let toadd = 1
+  "     for ex in s:excludes
+  "       if match(bufname(nr), ex) >= 0
+  "         let toadd = 0
+  "         break
+  "       endif
+  "     endfor
+  "     if getbufvar(nr, 'current_syntax') == 'qf'
+  "       let toadd = 0
+  "     endif
+  "     if s:exclude_preview && getbufvar(nr, '&bufhidden') == 'wipe' && getbufvar(nr, '&buftype') == 'nofile'
+  "       let toadd = 0
+  "     endif
+  "     if toadd
+  "       call add(buffers, nr)
+  "     endif
+  "   endif
+  " endfor
+  let buflist = ctrlspace#api#BufferList(tabpagenr())
+  for x in range(0, len(buflist)-1)
+    call add(buffers,buflist[x]["index"])
   endfor
-
-  let s:current_buffer_list = buffers
   return buffers
 endfunction
 

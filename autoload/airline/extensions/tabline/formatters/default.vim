@@ -14,6 +14,15 @@ function! airline#extensions#tabline#formatters#default#format(bufnr, buffers)
   let _ = ''
 
   let name = bufname(a:bufnr)
+
+  if !empty(getbufvar(a:bufnr,'term_title'))
+    let name = getbufvar(a:bufnr,'term_title')
+  endif
+
+  if !empty(getbufvar(a:bufnr,'title'))
+    let name = getbufvar(a:bufnr,'title')
+  endif
+
   if empty(name)
     let _ .= '[No Name]'
   else

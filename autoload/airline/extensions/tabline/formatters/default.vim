@@ -7,27 +7,26 @@ let s:fnamecollapse = get(g:, 'airline#extensions#tabline#fnamecollapse', 1)
 let s:fnametruncate = get(g:, 'airline#extensions#tabline#fnametruncate', 0)
 let s:buf_nr_format = get(g:, 'airline#extensions#tabline#buffer_nr_format', '%s: ')
 let s:buf_nr_show = get(g:, 'airline#extensions#tabline#buffer_nr_show', 0)
+let s:use_term_title = get(g:, 'airline#extensions#tabline#use_term_title', 1)
+
 let s:buf_modified_symbol = g:airline_symbols.modified
 
 function! airline#extensions#tabline#formatters#default#format(bufnr, buffers)
   let fmod = get(g:, 'airline#extensions#tabline#fnamemod', ':~:.')
   let _ = ''
 
-  let name = bufname(a:bufnr)
-
-  if !empty(getbufvar(a:bufnr,'term_title'))
+  if s:use_term_title && !empty(getbufvar(a:bufnr,'term_title'))
     let name = getbufvar(a:bufnr,'term_title')
-  endif
-
-  if !empty(getbufvar(a:bufnr,'title'))
-    let name = getbufvar(a:bufnr,'title')
+  else
+    let name = bufname(a:bufnr)
   endif
 
   if empty(name)
     let _ .= '[No Name]'
   else
     if s:fnamecollapse
-      let _ .= substitute(fnamemodify(name, fmod), '\v\w\zs.{-}\ze(\\|/)', '', 'g')
+      " let _ .= substitute(fnamemodify(name, fmod), '\v\w\zs.{-}\ze(\\|/)', '', 'g')
+      let _ .= substitute(fnamemodify(name, fmod), '\v\w\zs.{-}\ze(\\|/|\:|\@)', '', 'g')
     else
       let _ .= fnamemodify(name, fmod)
     endif

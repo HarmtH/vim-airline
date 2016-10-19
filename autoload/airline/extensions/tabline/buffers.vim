@@ -96,7 +96,7 @@ function! airline#extensions#tabline#buffers#get()
   call b.add_section('airline_tabfill', '')
   if s:show_tab_type
     " call b.add_section_spaced('airline_tabtype', s:buffers_label)
-    call b.add_section_spaced('airline_tabtype', ' %{getcwd()} [%{tabpagenr()}/%{tabpagenr("$")}]')
+    call b.add_section_spaced('airline_tabtype', '%{exists("t:CtrlSpaceLabel") ? t:CtrlSpaceLabel." " : ""}%{getcwd()} [%{tabpagenr()}/%{tabpagenr("$")}]')
   endif
   if tabpagenr('$') > 1
     call b.add_section_spaced('airline_tabmod', printf('%s %d/%d', "tab", tabpagenr(), tabpagenr('$')))

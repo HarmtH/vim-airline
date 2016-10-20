@@ -45,5 +45,9 @@ function! airline#extensions#tabline#formatters#default#wrap_name(bufnr, buffer_
   if getbufvar(a:bufnr, '&modified') == 1
     let _ .= s:buf_modified_symbol
   endif
+
+  if g:airline_bufnotinarg == a:bufnr
+    let _ = '!' . _
+  endif
   return _
 endfunction

@@ -26,6 +26,9 @@ function! airline#extensions#tabline#buflist#list()
 
   if hascurbuf == 0
     call add(buffers, bufnr('%'))
+    let g:airline_bufnotinarg = bufnr('%')
+  else
+    let g:airline_bufnotinarg = 0
   endif
 
   " let list = (exists('g:did_bufmru') && g:did_bufmru) ? BufMRUList() : range(1, bufnr("$"))

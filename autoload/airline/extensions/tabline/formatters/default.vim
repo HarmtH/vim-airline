@@ -26,7 +26,8 @@ function! airline#extensions#tabline#formatters#default#format(bufnr, buffers)
   else
     if s:fnamecollapse
       " let _ .= substitute(fnamemodify(name, fmod), '\v\w\zs.{-}\ze(\\|/)', '', 'g')
-      let _ .= substitute(fnamemodify(name, fmod), '\v\w\zs.{-}\ze(\\|/|\:|\@)', '', 'g')
+      let _ .= substitute(fnamemodify(name, fmod), '/$', '', '')
+      let _ = substitute(_, '\v\w\zs.{-}\ze(\\|/|\:|\@)', '', 'g')
     else
       let _ .= fnamemodify(name, fmod)
     endif

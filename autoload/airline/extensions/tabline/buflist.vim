@@ -18,8 +18,8 @@ function! airline#extensions#tabline#buflist#list()
   let buffers = []
   let hascurbuf = 0
   for name in argv()
-    call add(buffers, bufnr(name))
-    if bufnr('%') == bufnr(name)
+    call add(buffers, bufnr('^'.name.'$'))
+    if bufnr('%') == bufnr('^'.name.'$')
       let hascurbuf = 1
     endif
   endfor

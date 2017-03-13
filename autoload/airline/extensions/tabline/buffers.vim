@@ -98,7 +98,9 @@ function! airline#extensions#tabline#buffers#get()
     call b.add_section_spaced('airline_tabtype', s:buffers_label)
   endif
   if tabpagenr('$') > 1
-    call b.add_section_spaced('airline_tabmod', printf('%s %d/%d', "tab", tabpagenr(), tabpagenr('$')))
+    let title = gettabvar(tabpagenr(), 'title')
+    let title = title != '' ? title . ' ' : ''
+    call b.add_section_spaced('airline_tabmod', printf('%s[%d/%d]', title, tabpagenr(), tabpagenr('$')))
   endif
 
   let s:current_bufnr = cur
